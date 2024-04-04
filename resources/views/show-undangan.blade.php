@@ -12,7 +12,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.7/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    <link href="{{ asset('build/assets/app-BMggSXoI.css') }}" rel="stylesheet">
+    <script src="{{ asset('build/assets/app-mqEmiGqA.js') }}"></script>
     <style>
         .modal {
             transition: opacity 0.25s ease;
@@ -597,25 +599,26 @@
 </head>
 
 <body class=" bg-[#152142]" style="width: 100%; overflow-x: hidden;">
-    <div
-        class="modal opacity-0 pointer-events-none fixed z-50 overflow-hidden w-full h-full top-0 left-0 flex items-center justify-center">
-        <div class="relative z-50 w-full h-full">
-            <div class="modal-overlay absolute w-full h-full bg-white opacity-95"></div>
+    @mobile
+        <div
+            class="modal opacity-0 pointer-events-none fixed z-50 overflow-hidden w-full h-full top-0 left-0 flex items-center justify-center">
+            <div class="relative z-50 w-full h-full">
+                <div class="modal-overlay absolute w-full h-full bg-white opacity-95"></div>
 
-            <div class="modal-container fixed w-full h-full z-50 overflow-y-auto ">
-                <!-- Add margin if you want to see grey behind the modal-->
-                <div class="modal-content container mx-auto h-auto text-left ">
-                    <img alt="" class="w-screen h-screen overflow-hidden object-cover" src="img/banner.jpg" />
-                    <div class="absolute bottom-10 flex justify-center items-center w-full">
-                        <div class="">
-                            <button
-                                class="py-2 px-2  rounded-md shadow-sm  shadow-[#fed700] bg-[#fed700] active:bg:red-100 hover:bg-[#c3a60a] cursor-pointer"
-                                id="open-inv">
-                                <i class="fa fa-envelope"></i> Buka Undangan
-                            </button>
+                <div class="modal-container fixed w-full h-full z-50 overflow-y-auto ">
+                    <!-- Add margin if you want to see grey behind the modal-->
+                    <div class="modal-content container mx-auto h-auto text-left ">
+                        <img alt="" class="w-screen h-screen overflow-hidden object-cover" src="img/banner.jpg" />
+                        <div class="absolute bottom-10 flex justify-center items-center w-full">
+                            <div class="">
+                                <button
+                                    class="py-2 px-2  rounded-md shadow-sm  shadow-[#fed700] bg-[#fed700] active:bg:red-100 hover:bg-[#c3a60a] cursor-pointer"
+                                    id="open-inv">
+                                    <i class="fa fa-envelope"></i> Buka Undangan
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    {{-- <div class="px-6 py-4 absolute left-0 top-0 z-20 w-screen h-screen ">
+                        {{-- <div class="px-6 py-4 absolute left-0 top-0 z-20 w-screen h-screen ">
 
                         <div class="bubbles">
                             <div class="bubble"></div>
@@ -671,125 +674,196 @@
                         </div>
                     </div> --}}
 
+                    </div>
+                </div>
+                {{-- @endmobile --}}
+            </div>
+
+        </div>
+        <div class="w-full h-full" id="content">
+            @include('undangan-section.home')
+        </div>
+        <!--Modal-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script>
+            var audio = document.getElementById("song");
+
+            function playPause() {
+                if (audio.paused) {
+                    audio.play();
+                } else {
+                    audio.pause();
+                }
+            }
+
+            function setVolume(volume) {
+                audio.volume = volume;
+            }
+        </script>
+        <script>
+            toggleModal();
+            $("#open-inv").click(function() {
+                playPause();
+                toggleModal();
+                $("#content").show();
+            });
+
+            var openmodal = document.querySelectorAll('.modal-open')
+            for (var i = 0; i < openmodal.length; i++) {
+                openmodal[i].addEventListener('click', function(event) {
+                    event.preventDefault()
+                    toggleModal()
+                })
+            }
+
+            const overlay = document.querySelector('.modal-overlay')
+            overlay.addEventListener('click', toggleModal)
+
+            var closemodal = document.querySelectorAll('.modal-close')
+            for (var i = 0; i < closemodal.length; i++) {
+                closemodal[i].addEventListener('click', toggleModal)
+            }
+
+            document.onkeydown = function(evt) {
+                evt = evt || window.event
+                var isEscape = false
+                if ("key" in evt) {
+                    isEscape = (evt.key === "Escape" || evt.key === "Esc")
+                } else {
+                    isEscape = (evt.keyCode === 27)
+                }
+                if (isEscape && document.body.classList.contains('modal-active')) {
+                    toggleModal()
+                }
+            };
+
+            // playPause();
+            function toggleModal() {
+
+                const body = document.querySelector('body')
+                const modal = document.querySelector('.modal')
+                modal.classList.toggle('opacity-0')
+                modal.classList.toggle('pointer-events-none')
+                body.classList.toggle('modal-active')
+            }
+            // ///////////////////////////////////////////////////////////////////
+            (function() {
+                const second = 1000,
+                    minute = second * 60,
+                    hour = minute * 60,
+                    day = hour * 24;
+
+                //I'm adding this section so I don't have to keep updating this pen every year :-)
+                //remove this if you don't need it
+                let today = new Date(),
+                    dd = String(today.getDate()).padStart(2, "0"),
+                    mm = String(today.getMonth() + 1).padStart(2, "0"),
+                    yyyy = today.getFullYear(),
+                    nextYear = yyyy + 1,
+                    dayMonth = "04/14/",
+                    birthday = dayMonth + yyyy;
+
+                today = mm + "/" + dd + "/" + yyyy;
+                if (today > birthday) {
+                    birthday = dayMonth + nextYear;
+                }
+                //end
+
+                const countDown = new Date(birthday).getTime(),
+                    x = setInterval(function() {
+
+                        const now = new Date().getTime(),
+                            distance = countDown - now;
+
+                        document.getElementById("days").innerText = Math.floor(distance / (day)),
+                            document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
+                            document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
+                            document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
+
+                        //do something later when date is reached
+                        if (distance < 0) {
+                            // document.getElementById("headline").innerText = "It's my birthday!";
+                            // document.getElementById("countdown").style.display = "none";
+                            // document.getElementById("content").style.display = "block";
+                            clearInterval(x);
+                        }
+                        //seconds
+                    }, 0)
+            }());
+        </script>
+    @elsemobile
+        <style>
+            /*======================
+                    404 page
+                =======================*/
+
+
+            .page_404 {
+                padding: 40px 0;
+                background: #fff;
+                font-family: 'Arvo', serif;
+            }
+
+            .page_404 img {
+                width: 100%;
+            }
+
+            .four_zero_four_bg {
+
+                background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+                height: 400px;
+                background-position: center;
+            }
+
+
+            .four_zero_four_bg h1 {
+                font-size: 80px;
+            }
+
+            .four_zero_four_bg h3 {
+                font-size: 80px;
+            }
+
+            .link_404 {
+                color: #fff !important;
+                padding: 10px 20px;
+                background: #39ac31;
+                margin: 20px 0;
+                display: inline-block;
+            }
+
+            .contant_box_404 {
+                margin-top: -50px;
+            }
+        </style>
+        <section class="page_404">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 ">
+                        <div class="col-sm-10 col-sm-offset-1  text-center">
+                            <div class="four_zero_four_bg">
+                                <h1 class="text-center ">404</h1>
+
+
+                            </div>
+
+                            <div class="contant_box_404">
+                                <h3 class="h2">
+                                    Look like you're lost
+                                </h3>
+
+                                <p>Gunakan mobile HP ya..</p>
+
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            {{-- @endmobile --}}
-        </div>
-
-    </div>
-    <div class="w-full h-full" id="content">
-        @include('undangan-section.home')
-    </div>
-    <!--Modal-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        var audio = document.getElementById("song");
-
-        function playPause() {
-            if (audio.paused) {
-                audio.play();
-            } else {
-                audio.pause();
-            }
-        }
-
-        function setVolume(volume) {
-            audio.volume = volume;
-        }
-    </script>
-    <script>
-        toggleModal();
-        $("#open-inv").click(function() {
-            playPause();
-            toggleModal();
-            $("#content").show();
-        });
-
-        var openmodal = document.querySelectorAll('.modal-open')
-        for (var i = 0; i < openmodal.length; i++) {
-            openmodal[i].addEventListener('click', function(event) {
-                event.preventDefault()
-                toggleModal()
-            })
-        }
-
-        const overlay = document.querySelector('.modal-overlay')
-        overlay.addEventListener('click', toggleModal)
-
-        var closemodal = document.querySelectorAll('.modal-close')
-        for (var i = 0; i < closemodal.length; i++) {
-            closemodal[i].addEventListener('click', toggleModal)
-        }
-
-        document.onkeydown = function(evt) {
-            evt = evt || window.event
-            var isEscape = false
-            if ("key" in evt) {
-                isEscape = (evt.key === "Escape" || evt.key === "Esc")
-            } else {
-                isEscape = (evt.keyCode === 27)
-            }
-            if (isEscape && document.body.classList.contains('modal-active')) {
-                toggleModal()
-            }
-        };
-
-        // playPause();
-        function toggleModal() {
-
-            const body = document.querySelector('body')
-            const modal = document.querySelector('.modal')
-            modal.classList.toggle('opacity-0')
-            modal.classList.toggle('pointer-events-none')
-            body.classList.toggle('modal-active')
-        }
-        // ///////////////////////////////////////////////////////////////////
-        (function() {
-            const second = 1000,
-                minute = second * 60,
-                hour = minute * 60,
-                day = hour * 24;
-
-            //I'm adding this section so I don't have to keep updating this pen every year :-)
-            //remove this if you don't need it
-            let today = new Date(),
-                dd = String(today.getDate()).padStart(2, "0"),
-                mm = String(today.getMonth() + 1).padStart(2, "0"),
-                yyyy = today.getFullYear(),
-                nextYear = yyyy + 1,
-                dayMonth = "04/14/",
-                birthday = dayMonth + yyyy;
-
-            today = mm + "/" + dd + "/" + yyyy;
-            if (today > birthday) {
-                birthday = dayMonth + nextYear;
-            }
-            //end
-
-            const countDown = new Date(birthday).getTime(),
-                x = setInterval(function() {
-
-                    const now = new Date().getTime(),
-                        distance = countDown - now;
-
-                    document.getElementById("days").innerText = Math.floor(distance / (day)),
-                        document.getElementById("hours").innerText = Math.floor((distance % (day)) / (hour)),
-                        document.getElementById("minutes").innerText = Math.floor((distance % (hour)) / (minute)),
-                        document.getElementById("seconds").innerText = Math.floor((distance % (minute)) / second);
-
-                    //do something later when date is reached
-                    if (distance < 0) {
-                        // document.getElementById("headline").innerText = "It's my birthday!";
-                        // document.getElementById("countdown").style.display = "none";
-                        // document.getElementById("content").style.display = "block";
-                        clearInterval(x);
-                    }
-                    //seconds
-                }, 0)
-        }());
-    </script>
+        </section>
+    @endmobile
 </body>
 
 </html>
