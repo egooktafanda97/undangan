@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
     <title>Document</title>
     <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
         integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
@@ -15,7 +16,15 @@
     {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
     <link href="{{ asset('build/assets/app-BMggSXoI.css') }}" rel="stylesheet">
     <script src="{{ asset('build/assets/app-mqEmiGqA.js') }}"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
     <style>
+        body {
+            position: relative;
+            box-sizing: border-box !important;
+            overflow-x: hidden !important;
+        }
+
         .modal {
             transition: opacity 0.25s ease;
         }
@@ -598,89 +607,26 @@
     </style>
 </head>
 
-<body class=" bg-[#152142]" style="width: 100%; overflow-x: hidden;">
+<body class="!w-screen bg-[#152142]" style=" width:100vw !important; overflow-x: hidden;">
     @mobile
-        <div
-            class="modal opacity-0 pointer-events-none fixed z-50 overflow-hidden w-full h-full top-0 left-0 flex items-center justify-center">
-            <div class="relative z-50 w-full h-full">
-                <div class="modal-overlay absolute w-full h-full bg-white opacity-95"></div>
-
-                <div class="modal-container fixed w-full h-full z-50 overflow-y-auto ">
-                    <!-- Add margin if you want to see grey behind the modal-->
-                    <div class="modal-content container mx-auto h-auto text-left ">
-                        <img alt="" class="w-screen h-screen overflow-hidden object-cover" src="img/banner.jpg" />
-                        <div class="absolute bottom-10 flex justify-center items-center w-full">
-                            <div class="">
-                                <button
-                                    class="py-2 px-2  rounded-md shadow-sm  shadow-[#fed700] bg-[#fed700] active:bg:red-100 hover:bg-[#c3a60a] cursor-pointer"
-                                    id="open-inv">
-                                    <i class="fa fa-envelope"></i> Buka Undangan
-                                </button>
-                            </div>
-                        </div>
-                        {{-- <div class="px-6 py-4 absolute left-0 top-0 z-20 w-screen h-screen ">
-
-                        <div class="bubbles">
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                            <div class="bubble"></div>
-                        </div>
-                    </div> --}}
-
-                    </div>
+        {{-- ================ --}}
+        <div class="!w-screen !h-screen bg-red-200 absolute t-0 b-0 l-0 r-0" id="banner"
+            style="z-index: 100; overflow: hidden;">
+            <img alt="" class="!w-screen !h-screen overflow-hidden object-cover" src="img/banner.jpg"
+                style="width: 100% !important; height:100vh  !important;" />
+            <div class="absolute flex justify-center items-center w-full" style="bottom: 0; margin-bottom:5px">
+                <div class="">
+                    <button
+                        class="py-2 px-2  rounded-md shadow-sm  shadow-[#fed700] bg-[#fed700] active:bg:red-100 hover:bg-[#c3a60a] cursor-pointer"
+                        id="open-inv">
+                        <i class="fa fa-envelope"></i> Buka Undangan
+                    </button>
                 </div>
-                {{-- @endmobile --}}
             </div>
-
         </div>
-        <div class="w-full h-full" id="content">
+
+        <div class="!w-screen h-full" id="content"
+            style="width: 100% !important; height: 0px !important; overflow: hidden !important; ">
             @include('undangan-section.home')
         </div>
         <!--Modal-->
@@ -703,11 +649,13 @@
             }
         </script>
         <script>
-            toggleModal();
             $("#open-inv").click(function() {
-                playPause();
-                toggleModal();
-                $("#content").show();
+                // playPause();
+                $("#banner").hide();
+                $("#contens").css({ // Mengatur properti CSS untuk elemen dengan ID "contens"
+                    "overflow": "visible", // Mengatur overflow menjadi visible
+                    "height": "auto" // Mengatur height menjadi auto
+                });
             });
 
             var openmodal = document.querySelectorAll('.modal-open')
@@ -796,8 +744,8 @@
     @elsemobile
         <style>
             /*======================
-                    404 page
-                =======================*/
+                                                                                                                                                                404 page
+                                                                                                                                                            =======================*/
 
 
             .page_404 {
